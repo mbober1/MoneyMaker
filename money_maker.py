@@ -18,7 +18,7 @@ class Company:
         self.financial_results = []
     
     def info(self):
-        return ('Nazwa: ' + self.name) +"\n"+ ('LINK: '+ str(self.link)) +"\n"+ "RESULTS: " +str(len(self.financial_results)) +"\n"+ str(self.financial_results)+"\n"+"\n"
+        return ('Nazwa: ' + self.name) + "\n" + ('LINK: '+ str(self.link)) + "\n" + "\n" + str(self.financial_results) + "\n" + "\n"
 
     def download(self):
         try:
@@ -41,7 +41,8 @@ class Company:
             self.financial_results.pop(0)
 
         except Exception as e: 
-            print(str(e))
+            print("Nie można pobrać danych o spółce " + str(self.name) + ". Błąd: " + str(e))
+            print(self.link)
 
     def filtr(self, amounts):
         self.years_dict = {}
@@ -67,7 +68,6 @@ class Company:
 def save_to_file(objects):
     with open(data_file, 'wb') as f:
         pickle.dump(objects,f)
-    f.close()
 
 def read_from_file():
     try:
@@ -82,7 +82,7 @@ def read_from_file():
         
 
 
-def update_companies_list(link):
+def update_companies_list():
     companies_list = []
     source = urllib.request.urlopen(link).read()
     soup = BeautifulSoup(source,'html.parser')
@@ -142,7 +142,7 @@ def filtr_increasing_divid(years_list, years_dict):
     return 1
 
 def delta_divid(objects):
-    return float(objects.financial_results[0][4])-float(objects.financial_results[1][4])
+    return (float(objects.financial_results[0][4])-float(objects.financial_results[1][4]))/float(objects.financial_results[1][4])
 
 
 
@@ -167,5 +167,5 @@ print(bcolors.OKGREEN + "Spółek z rosnaca dywidenda: " + bcolors.WARNING + str
 best_companies.sort(key=delta_divid, reverse=True)
 for i in best_companies:
     print('\n')
-    print(bcolors.BOLD + i.name + bcolors.ENDC)
+    print(bcolors.BOLD + i.name + bcolors.ENDC + ' wzrost o ' + bcolors.OKGREEN + str(int(delta_divid(i)*100)) + '%' +bcolors.ENDC)
     print(bcolors.HEADER + i.link + bcolors.ENDC)
