@@ -78,9 +78,6 @@ def read_from_file():
         print('Cannot find database')
         objects = []
         return objects
-        
-        
-
 
 def update_companies_list():
     companies_list = []
@@ -106,6 +103,7 @@ def update_companies_list():
     print("Pobrano " + str(len(companies_list)) + " firm")
     return companies_list
 
+
 def fill_objects():
     objects = []
     objects = read_from_file()
@@ -124,8 +122,6 @@ def fill_objects():
         save_to_file(objects)
         print('Saved to file')
     return objects
-
-
 
 def filtr_years_in_a_row(years_list, amount):
     for i in range(amount-1):
@@ -148,6 +144,10 @@ def delta_divid(objects):
 
 
 
+
+
+
+
 link = "https://strefainwestorow.pl/dane/dywidendy/lista-dywidend/2019"
 # link = "https://strefainwestorow.pl/artykuly/dywidendy"
 
@@ -162,10 +162,9 @@ for i in objects: i.filtr(amounts)
 print(bcolors.OKGREEN + "Sprawdzonych spółek: " + bcolors.WARNING + str(len(objects)) + bcolors.ENDC)
 print(bcolors.OKGREEN + "Spółek z dywidendą ponad 4 lata: " + bcolors.WARNING + str(amounts[0]) + bcolors.ENDC)
 print(bcolors.OKGREEN + "Spółek z dywidendą ponad 4 lata z rzedu: " + bcolors.WARNING + str(amounts[1]) + bcolors.ENDC)
-print(bcolors.OKGREEN + "Spółek z rosnaca dywidenda: " + bcolors.WARNING + str(amounts[2]) + bcolors.ENDC)
+print(bcolors.OKGREEN + "Spółek z rosnaca dywidenda: " + bcolors.WARNING + str(amounts[2]) + bcolors.ENDC + '\n')
 
 best_companies.sort(key=delta_divid, reverse=True)
 for i in best_companies:
-    print('\n')
-    print(bcolors.BOLD + i.name + bcolors.ENDC + ' wzrost o ' + bcolors.OKGREEN + str(int(delta_divid(i)*100)) + '%' +bcolors.ENDC)
-    print(bcolors.HEADER + i.link + bcolors.ENDC)
+    print(str(best_companies.index(i)+1) + '. ' + bcolors.BOLD + i.name + bcolors.ENDC + ' wzrost o ' + bcolors.OKGREEN + str(int(delta_divid(i)*100)) + '%' +bcolors.ENDC)
+    print(bcolors.HEADER + i.link + bcolors.ENDC + '\n')
