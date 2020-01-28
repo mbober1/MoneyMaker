@@ -144,16 +144,36 @@ def delta_divid(objects):
 
 
 
+def update_years_list():
+    years = []
+    source = urllib.request.urlopen(link).read()
+    soup = BeautifulSoup(source,'html.parser')
+    tables = soup.find("ul", {"class": "nav nav-pills"})
+    table_rows = tables.find_all('li')
+    for tr in table_rows:
+        table_column = tr.find_all('a')
+        for td in table_column:
+            data = str(td)
+            # print(data)
+            if (data[0:40]=='<a href="/dane/dywidendy/lista-dywidend/') : years.append(data[40:44])
+    return years
 
 
 
+link = "https://strefainwestorow.pl/dane/dywidendy/lista-dywidend/1993"
+years_list = update_years_list()
+print(bcolors.WARNING + "Dane dostepne dla nastepujących lat:" + bcolors.ENDC + bcolors.BOLD)
+for i in reversed(years_list):
+    print(bcolors.BOLD + i + bcolors.ENDC)
 
 
+choosed_year = input(bcolors.WARNING + "Który rok chcesz przeanalizować? " + bcolors.ENDC)
+while (choosed_year not in years_list):
+    choosed_year = input(bcolors.WARNING + "Wybierz rok z listy: " + bcolors.ENDC + bcolors.BOLD)
 
-link = "https://strefainwestorow.pl/dane/dywidendy/lista-dywidend/2019"
-# link = "https://strefainwestorow.pl/artykuly/dywidendy"
+link = "https://strefainwestorow.pl/dane/dywidendy/lista-dywidend/"+str(choosed_year)
 
-data_file = 'data.dat'
+data_file = choosed_year + '.dat'
 objects = fill_objects()
 
 amounts = [0,0,0]
